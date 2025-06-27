@@ -1,29 +1,28 @@
 ---
 type: "project" # DON'T TOUCH THIS ! :)
 date: "2025-05-20" # Date you first upload your project.
-# Deep Electrode Mapper: Using Deep Learning to Localize EEG Electrodes' Coordinates
+title: "Deep Electrode Mapper: Localizing EEG Electrodes from 3D Point Clouds Using Deep Learning"
 
 # List the names of the collaborators within the [ ]. If alone, simple put your name within []
 names: [Joel P. Diaz-Fong, Lucas Vidal Murakami, Aijia Ivy Zhong]
 
 # Your project GitHub repository URL
-github_repo: https://github.com/JOEwithanL/DeepElectrodeMapper
+github_repo: https://github.com/brainhack-school2025/DeepElectrodeMapper
 
-# List +- 4 keywords that best describe your project within []. Note that the project summary also involves a number of key words. Those are listed on top of the [github repository](https://github.com/PSY6983-2021/project_template), click `manage topics`.
+# If you are working on a project that has website, indicate the full url including "https://" below or leave it empty.
+website:
+
+# List +- 4 keywords that best describe your project within []. Note that the project summary also involves a number of key words. Those are listed on top of the [github repository](https://github.com/brainhack-school2023/JDaoust_project.git), click `manage topics`.
 # Please only lowercase letters
-tags: [electrode localization, deep learning, clustering, preprocessing tools]
+tags: [electrode localization, deep learning, clustering]
 
 # Summarize your project in < ~75 words. This description will appear at the top of your page and on the list page with other projects.
 
-summary: "Accurate source localization in EEG requires electrode's coordinates. However, currently this process requires skill and experience in dealing with different methods and softwares, which can be expensive, laborious and time consuming (Tveter et al., 2024). The Deep Electrode Mapper’s objective is to solve the electrodes’ localization issue by implementing deep learning to segment the electrodes from multiple image formats and find their coordinates via clustering. Currently the project is still in progress, and its development will be shared via its repository. 
-
-References:
-
-Tveter, M., Tveitstøl, T., Nygaard, T., Kulashekhar, S., Bruña, R., Hammer, H. L., Hatlestad-Hall, C., & Haraldsen, I. R. H. (2024). EEG electrodes and where to find them: automated localization from 3D scans. Journal of Neural Engineering, 21(5), 056022."
+summary: "Accurate EEG source localization depends on precise electrode coordinates, yet current methods are often manual, costly, and technically demanding. *Deep Electrode Mapper* attempts to address this by applying deep learning to segment electrodes from 3D head models—derived from MRI or 3D scans—and localize their coordinates using clustering. Although the project remains incomplete, it demonstrates a proof-of-concept pipeline, and progress is documented in the public repository."
 
 # If you want to add a cover image (listpage and image in the right), add it to your directory and indicate the name
 # below with the extension.
-image: ""
+image: "coverimage.png"
 ---
 <!-- This is an html comment and this won't appear in the rendered page. You are now editing the "content" area, the core of your description. Everything that you can do in markdown is allowed below. We added a couple of comments to guide your through documenting your progress. -->
 
@@ -31,11 +30,111 @@ image: ""
 
 ### Background
 
-When using EEG for clinical or research analysis of brain activity the problem of associating a recording to a specific brain region (i.e., source localization) needs to be addressed for meaningful analysis. Although dependent on some variables, knowing the coordinates of the electrodes (i.e., where the signal is being recorded) precisely and accurately is central for source localization (Hirth et al., 2020). However, currently getting electrodes' coordinates are either time-consuming, requiring manual labeling of each electrode, or using specilzed software that are expensive to use (Tveter et al., 2024), adding to the skills and experience required in either method. In addition, there are multiple file formats that can be used for extracting the electrodes' coordinates, for example, MRI volumes (Pinte et al., 2021), 3D scans and photogrammetry (Hirth et al., 2020). Therefore, having a a pipeline that is less labour intensive and expensive, while accounting for the multiple set-ups and file formats would be an ideal improvement in the process of electrodes' localization.
-There has been development in improving the electrodes' localization process, for example pipeline using phones as portable scanners, algorithms that predict other electrode coordinates based on a smaller subset for multiple channels' setups (Hirth et al., 2020), and even the usage of deep learning to localize the coordinates from MRI scans (Pinte et al., 2021). 
-In light of such developments, this project aimed to use deep learning to perform localization of electrodes, while accounting that the pipeline is generalizable for different file formats and set-ups, so it can be used inspite of the methodology used.
+In EEG analysis that aims to localize the origin of brain signals, source localization requires a realistic head model and precise electrode coordinates to ensure spatial accuracy. However, current approaches to obtaining these coordinates are either time-consuming (e.g., manual labeling) or require specialized, often costly hardware/software. Both options demand technical expertise, posing barriers to widespread or streamlined use.
 
-References:
+Further complicating matters, electrode localization must accommodate various data formats, such as MRI volumes (Pinte et al., 2021), 3D surface scans, and photogrammetry (Hirth et al., 2020). A robust solution must therefore be both format-agnostic and computationally efficient.
+
+Recent innovations have begun to address this need: pipelines using mobile phones for 3D scanning (Everitt et al., 2023), algorithms that infer missing electrodes from partial montages (Hirth et al., 2020), and deep learning models applied to MRI-based localization (Pinte et al., 2021) have all demonstrated potential.
+
+Building on these efforts, our project aims to develop a deep learning-based pipeline for electrode localization that is generalizable across file types and imaging modalities. The goal is to create a solution that reduces cost, minimizes manual labor, and increases accessibility—regardless of the acquisition method used.
+
+
+
+
+#### Objectives
+- Automate EEG electrode localization and labeling  
+- Develop a flexible pipeline that can be applied to external datasets  
+- Evaluate localization accuracy across data types (e.g., same-modality `.obj` vs. cross-modality T1-weighted MRI) to test generalizability  
+
+
+#### Objectives for BrainHack school
+- Gain hands-on experience with open-source tools, deep learning frameworks, and collaborative coding practices
+
+### Tools
+
+This project relies on the following tools:
+
+- **GitHub** – For version control and collaborative development
+- **VS Code** and **Jupyter Notebook** – For interactive and modular code development
+
+Key libraries and components:
+
+- **Open3D** – Convert surface and volume data into 3D point cloud format (`.ply`, `.npz`)
+- **h5py** – Transform labeled and unlabeled 3D point clouds into HDF5 format
+- **PointNet++** – Deep learning model for training and testing electrode localization and segmentation
+- **K-Means Clustering** – Identify electrode centroids and extract their coordinates
+- Custom alignment tools – Align electrode labels to head scans
+
+### Data
+
+The dataset includes 3D head models acquired using a portable 3D scanner (`.obj` files). A subset of participants also has T2-weighted MRI scans (`.nii`) acquired while wearing an EEG cap.
+
+These data come from the study *Alpha Oscillations and Working Memory Deficits in ADHD: A Multimodal Imaging Investigation* (R01MH116268), available through the NIH Data Archive:  
+[https://nda.nih.gov/edit_collection.html?id=3101](https://nda.nih.gov/edit_collection.html?id=3101)
+
+
+
+### Deliverables
+
+1. GitHub repository with our tools and code.
+2. Documentation on how to train and test on different datasets.
+
+## Results
+
+### Progress Overview
+
+We focused on preparing the dataset for training the PointNet++ model and developing a clustering pipeline to extract electrode coordinates once segmentation is complete. A subset of the dataset was manually labeled to create both labeled and unlabeled data for training and testing the model. 
+
+We also built two tools to align electrode labels with the corresponding head model. To ensure compatibility with PointNet++, we converted the data into point cloud format and then into HDF5 files—both in labeled and unlabeled versions. Our preprocessing script accepts multiple input formats to support generalizability.
+
+Additionally, we implemented a Python script using K-Means clustering to extract centroid coordinates from the segmented point clouds. These centroids are intended to serve as the localized electrode positions.
+
+Next steps include training and evaluating the deep learning model. Given the limited dataset size, we are also exploring the possibility of augmenting the training set with synthetic data.
+
+
+### Tools I Learned During This Project
+
+- **GitHub**  
+  We learned how to use GitHub for version control and collaborative development, enabling us to share and track changes to code and scripts across the team.
+
+- **Jupyter Notebook**  
+  We used Jupyter Notebooks to develop and test code in a modular, step-by-step fashion. This structure made it easier to isolate and debug issues and helped organize different components of the pipeline.
+
+- **VS Code**  
+  Visual Studio Code was valuable for integrating multiple development tools in one environment. We used it to write and manage code across files, run terminals, and install packages directly, streamlining the development workflow.
+
+
+### Results
+
+#### Deliverable 1: GitHub Repository
+
+Although the project is still in progress and the GitHub repository does not yet contain the final versions of the scripts or a trained model, we have uploaded several core components. These include tools for aligning electrode labels with 3D head scans, scripts for preprocessing data for deep learning input, and post-segmentation clustering scripts to extract electrode coordinates from the model output.
+
+#### Deliverable 2: Documentation
+
+Although the deep learning model has not yet been trained or tested, we began preparing documentation that outlines the full electrode localization workflow. This includes a step-by-step description of the data preprocessing, model input/output formatting, and post-processing steps such as clustering for coordinate extraction.
+
+To aid clarity and reproducibility, we created a visual representation of the workflow:
+
+![Deep Electrode Mapper Workflow](workflow.png)
+
+This diagram illustrates the full pipeline—from raw 3D scan input and manual labeling to PointNet++ segmentation and centroid estimation. Full documentation will be completed as the project advances and the model is finalized.
+
+
+### Conclusion and Acknowledgements
+
+Developing a generalizable and accessible tool for localizing EEG electrode coordinates would represent a meaningful advance in both clinical and research applications of EEG. While deep learning offers a promising route toward automation and scalability, it introduces limitations—particularly the need for large, labeled datasets and consistency in data acquisition setups. Despite these challenges, our approach demonstrates the potential for building a flexible pipeline that accommodates diverse file formats and EEG systems.
+
+We plan to continue developing this project to assess the feasibility and accuracy of the proposed method.
+
+We gratefully acknowledge the study *Alpha Oscillations and Working Memory Deficits in ADHD: A Multimodal Imaging Investigation* (R01MH116268) for providing access to the data used in this project. We also thank the BrainHack School for offering the time, support, and collaborative environment that enabled this work.
+
+Sample data can be accessed at: [osf.io/87av2](https://osf.io/87av2)
+
+
+## References
+
+Diaz-Fong, J. P., & Lenartowicz, A. (2025, March 8). 3D Scanning Sample Data for EEG Electrode Localization. Retrieved from osf.io/87av2
 
 Everitt, A., Richards, H., Song, Y., Smith, J., Kobylarz, E., Lukovits, T., Halter, R., & Murphy, E. (2023). EEG electrode localization with 3D iPhone scanning using point-cloud electrode selection (PC-ES). Journal of Neural Engineering, 20(6), 066033.
 
@@ -44,53 +143,3 @@ Hirth, L. N., Stanley, C. J., Damiano, D. L., & Bulea, T. C. (2020). Algorithmic
 Pinte, C., Fleury, M., & Maurel, P. (2021). Deep learning-based localization of EEG electrodes within MRI acquisitions. Frontiers in Neurology, 12, 644278.
 
 Tveter, M., Tveitstøl, T., Nygaard, T., Kulashekhar, S., Bruña, R., Hammer, H. L., Hatlestad-Hall, C., & Haraldsen, I. R. H. (2024). EEG electrodes and where to find them: automated localization from 3D scans. Journal of Neural Engineering, 21(5), 056022."
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PTYs_JFKsHI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-### Tools
-
-The Deep Electrode Mapper project will rely on the following technologies:
- * GitHub, to share our progress as a group and for other possible users.
- * VS Code and Jupyter Notebook for coding the various steps to develop the project.
-     * Created tools for aliging electrodes and their labels to head scan.  
-     * Open3D library - Convert surface and volume data into 3D point cloud format (.ply and .npz).
-     * h5py package - Transform unlabeled and labeled 3D Point Cloud into HDF5
-     * PointNet++ - Train deep learning model on electrode localization and segementation and test on the data set.
-     * K-Means Clustering Algorithm - Find centroids and its coordinates.
-
-### Data
-
-Our data comprises of 144 3D scanned head models acquired with a portable 3D scanner (.obj files), of which 39 have T2-weighted MRI scans while participants wore the EEG cap (.nii). Our data is from the study Alpha oscillations and working memory deficits in ADHD: A multimodal imaging investigation (R01MH116268) - https://nda.nih.gov/edit_collection.html?id=3101.
-
-### Deliverables
-
-At the end of this project, we will have:
- - GitHub repository with our tools and code.
- - Documentation on how to train and test on different datasets.
-
-## Results
-
-### Progress overview
-
-Currently we worked on the preparation of the data to train the PointNet++, preparing the PointNet++ for training, and developing the clustering for the extraction of the centroids coordinates for when the PointNet++ output will be ready. A subset of the dataset had the electrodes manually labelled so we could have labelled and unlablled data for training and testing the deep learning model. This allowed the creation of two tools for aligning the electrodes to a head model. For the data to be compatible to the deep learning model we transformed data into PointCloud and then HDF5 format both containing labels or not (the script accepts multiple file formats for generalizability). Lastly, we developed a python script to perform clustering of the PointCloud data to extract the centroids and their coordintes, which should be once we have the segmented electrodes from the deep learning model, the coordinates of the electrodes. For next steps we aim to train and test the deep learning model. Moreover, due to limited amount of data set we are still pondering the possibility of increasing the training dataset with synthetic data.
-
-### Tools I learned during this project
-
-* **GitHub** We learned how to use GitHub to share the code and scripts that each of us were working on.
-* **Jupyter Notebook** Learned how to code using Jupyter Notebook, to have a more modular, step by step structure of coding, which was quite helpful in separating the different functions. Moreover, it was useful to debug when there was a problem, as it was easier to identify where the issue was occuring.
-* **VSCode** Throughout the coding for the project using VSCode was very helpful in, as it contained multiple functionalities in one place, beuing able to use the terminal, and code in different files, as well as being able to directly install any necessary packages.
-
-### Results
-
-#### Deliverable 1: GitHub repository
-
-Although the project is still in progress, which signifies that the GitHub repository does not yet have all the final version of the scripts or the trained model, we were able to add some tools for aligning the electrode lables with the 3D scan, as well as some of the scripts for preparing the data for training the deep learning model, and for the clustering of the segmented data after the deep learning output model for achiebing the electrode coordinates.
-
-#### Deliverable 2: Documentation
-
-As the deep learning model was not yet trained or tested, we did not yet wrote the documentation, but we will do once the project advances.
-
-## Conclusion and acknowledgement
-
-To conclude, it would be a relevant step in the clinical and research application of EEG to have a generalizable and accessible tool for localizing the electrodes' coordinates. Although implementing a solution with deep learning is promising, it comes with certain limitations, for example the requirements of having a large dataset for training, and specific set-up to use it. Nevertheless it presents the possibility of having a generalizable solution for different file contents and EEG caps. Therefore, we will still continue to attempt to develop the project and assess the viability of the solution.
-We would like to thank the study Alpha oscillations and working memory deficits in ADHD: A multimodal imaging investigation (R01MH116268) for providing and allowing us to use the data for our project. Moreover, we would like to thank the BrainHack School for giving us the space, time, and support to pursue and collaborate on this project.
